@@ -65,6 +65,9 @@ class OfficerTest extends TestCase
             Officer::FIELD_OCR_ID       => $intOfficerClusterRootId,
             Officer::FIELD_ADDRESS      => $strAddressInFull,
             Officer::FIELD_PREVIOUS_NAMES => $arrPreviousNames,
+            Officer::FIELD_COMPANY_AGENT_CLUSTER_ID => 1,
+            Officer::FIELD_KONNECT_ID => 'KonnectId'
+
         ];
 
         $modelOfficer = new Officer($arrOfficerData);
@@ -85,6 +88,8 @@ class OfficerTest extends TestCase
             Officer::FIELD_OCR_ID       => $modelOfficer->getOfficerClusterRootId(),
             Officer::FIELD_ADDRESS      => $modelOfficer->getAddressInFull(),
             Officer::FIELD_PREVIOUS_NAMES => $modelOfficer->getPreviousNames(),
+            Officer::FIELD_COMPANY_AGENT_CLUSTER_ID => $modelOfficer->getCompanyFormationAgentId(),
+            Officer::FIELD_KONNECT_ID => $modelOfficer->getKonnectId(),
         ];
 
         $this->assertEquals($arrOfficerData, $arrGetters);
@@ -108,6 +113,9 @@ class OfficerTest extends TestCase
         $strType                 = OfficerType::TYPE_PERSON;
         $intOfficerClusterRootId = 3;
         $strAddressInFull        = 'testAddress';
+        $intCompanyFormationAgentId = 1;
+        $strKonnectId = 'KonnectId';
+        $arrPreviousNames = ['previous names'];
 
         $arrOfficerData = [
             Officer::FIELD_ID           => $intId,
@@ -123,7 +131,10 @@ class OfficerTest extends TestCase
             Officer::FIELD_ADDRESS_PK   => $intAddressPK,
             Officer::FIELD_TYPE         => $strType,
             Officer::FIELD_OCR_ID       => $intOfficerClusterRootId,
-            Officer::FIELD_ADDRESS      => $strAddressInFull
+            Officer::FIELD_ADDRESS      => $strAddressInFull,
+            Officer::FIELD_COMPANY_AGENT_CLUSTER_ID => $intCompanyFormationAgentId,
+            Officer::FIELD_KONNECT_ID => $strKonnectId,
+            Officer::FIELD_PREVIOUS_NAMES => $arrPreviousNames,
         ];
 
         $modelOfficer = new Officer($arrOfficerData);

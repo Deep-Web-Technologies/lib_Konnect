@@ -54,6 +54,20 @@ class CorporateTest extends TestCase
             Corporate::FIELD_LINKED_ADDRESSES    => [],
             Corporate::FIELD_CHARGES             => [],
             Corporate::FIELD_OWNERSHIP_STRUCTURE => [],
+            Corporate::FIELD_HISTORIC_NAMES => ['historic'],
+            Corporate::FIELD_NATURE_OF_BUSINESS => [],
+            Corporate::FIELD_PREVIOUS_NAMES => ['historic name'],
+            Corporate::FIELD_RETIEVED_AT => 'retrieved at',
+            Corporate::FIELD_NOC_NOT_ADDING_UP => false,
+            Corporate::FIELD_REGISTRY_URL => 'registry' ,
+            Corporate::FIELD_ACCOUNTS_REF_DATE => 'accounts ref',
+            Corporate::FIELD_ACCOUNTS_LAST_UP_DATE => 'accounts up to date',
+            Corporate::FIELD_ANNUAL_RETURN_LAST_UP_DATE => 'annual return last',
+            Corporate::FIELD_INDUSTRY_CODES => 'industry codes',
+            Corporate::FIELD_KONNECT_ID => 'konnect id',
+            Corporate::FIELD_REQUESTOR => 'requester',
+            Corporate::FIELD_VAT => [],
+            Corporate::FIELD_ICO_REGISTER => []
         ];
 
         $modelCorporate = new Corporate($arrCorporateData);
@@ -76,6 +90,20 @@ class CorporateTest extends TestCase
             Corporate::FIELD_LINKED_ADDRESSES    => $modelCorporate->getLinkedAddresses(),
             Corporate::FIELD_CHARGES             => $modelCorporate->getCharges(),
             Corporate::FIELD_OWNERSHIP_STRUCTURE => $modelCorporate->getOwnershipStructure(),
+            Corporate::FIELD_HISTORIC_NAMES => $modelCorporate->getHistoricNames(),
+            Corporate::FIELD_NATURE_OF_BUSINESS => $modelCorporate->getNatureOfBusiness(),
+            Corporate::FIELD_PREVIOUS_NAMES => $modelCorporate->getPreviousNames(),
+            Corporate::FIELD_RETIEVED_AT => $modelCorporate->getRetrievedAt(),
+            Corporate::FIELD_NOC_NOT_ADDING_UP => $modelCorporate->getNocNotAddingUp(),
+            Corporate::FIELD_REGISTRY_URL => $modelCorporate->getRegistryUrl(),
+            Corporate::FIELD_ACCOUNTS_REF_DATE => $modelCorporate->getAccountsReferenceDate(),
+            Corporate::FIELD_ACCOUNTS_LAST_UP_DATE => $modelCorporate->getAccountsLastMadeUpDate(),
+            Corporate::FIELD_ANNUAL_RETURN_LAST_UP_DATE => $modelCorporate->getAnnualReturnLastMadeUpDate(),
+            Corporate::FIELD_INDUSTRY_CODES => $modelCorporate->getIndustryCodes(),
+            Corporate::FIELD_KONNECT_ID => $modelCorporate->getKonnectId(),
+            Corporate::FIELD_REQUESTOR => $modelCorporate->getRequestor(),
+            Corporate::FIELD_VAT => $modelCorporate->getVAT(),
+            Corporate::FIELD_ICO_REGISTER => $modelCorporate->getICORegisterEntries(),
         ];
 
         $this->assertEquals($arrCorporateData, $arrGetters);

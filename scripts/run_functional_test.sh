@@ -1,0 +1,1 @@
+vendor/bin/phpunit --stderr --verbose --colors ./test/Functional/$1.php

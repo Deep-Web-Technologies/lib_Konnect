@@ -23,6 +23,8 @@ class Officer extends KonnectAbstract
     const FIELD_OCR_ID       = 'OfficerClusterRootId';
     const FIELD_ADDRESS      = 'AddressInFull';
     const FIELD_PREVIOUS_NAMES = 'PreviousNames';
+    const FIELD_COMPANY_AGENT_CLUSTER_ID = 'CompanyFormationAgentClusterId';
+    const FIELD_KONNECT_ID   = 'KonnectId';
 
     const PRIMARY_KEY        = self::FIELD_ID;
 
@@ -57,6 +59,11 @@ class Officer extends KonnectAbstract
     public function getId()
     {
         return $this->_getField(self::FIELD_ID, null);
+    }
+
+    public function getKonnectId() : ?string
+    {
+        return $this->_getField(self::FIELD_KONNECT_ID, null);
     }
 
     public function getName() : ?string
@@ -132,6 +139,11 @@ class Officer extends KonnectAbstract
         return $this->_getField(self::FIELD_ADDRESS, null);
     }
 
+    public function getCompanyFormationAgentId() : ?int
+    {
+        return $this->_getField(self::FIELD_COMPANY_AGENT_CLUSTER_ID, null);
+    }
+
     public function getPreviousNames() : array
     {
         return $this->_getField(self::FIELD_PREVIOUS_NAMES, []);
@@ -176,20 +188,24 @@ class Officer extends KonnectAbstract
         }
 
         return [
-            self::FIELD_ID           => $this->getId(),
-            self::FIELD_NAME         => $this->getName(),
-            self::FIELD_FIRST_NAME   => $this->getFirstName(),
-            self::FIELD_LAST_NAME    => $this->getLastName(),
-            self::FIELD_OFFICER_ROLE => $intRole,
-            self::FIELD_POSITION     => $this->getPosition(),
-            self::FIELD_START_DATE   => $this->getStartDate(),
-            self::FIELD_END_DATE     => $this->getEndDate(),
-            self::FIELD_NATIONALITY  => $this->getNationality(),
-            self::FIELD_PARTIAL_DOB  => $this->getPartialDateOfBirth(),
-            self::FIELD_ADDRESS_PK   => $this->getAddressPK(),
-            self::FIELD_TYPE         => $strType,
-            self::FIELD_OCR_ID       => $this->getOfficerClusterRootId(),
-            self::FIELD_ADDRESS      => $this->getAddressInFull()
+            self::FIELD_ID              => $this->getId(),
+            self::FIELD_KONNECT_ID      => $this->getKonnectId(),
+            self::FIELD_NAME            => $this->getName(),
+            self::FIELD_FIRST_NAME      => $this->getFirstName(),
+            self::FIELD_LAST_NAME       => $this->getLastName(),
+            self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames(),
+            self::FIELD_OFFICER_ROLE    => $intRole,
+            self::FIELD_POSITION        => $this->getPosition(),
+            self::FIELD_START_DATE      => $this->getStartDate(),
+            self::FIELD_END_DATE        => $this->getEndDate(),
+            self::FIELD_NATIONALITY     => $this->getNationality(),
+            self::FIELD_PARTIAL_DOB     => $this->getPartialDateOfBirth(),
+            self::FIELD_ADDRESS_PK      => $this->getAddressPK(),
+            self::FIELD_TYPE            => $strType,
+            self::FIELD_OCR_ID          => $this->getOfficerClusterRootId(),
+            self::FIELD_ADDRESS         => $this->getAddressInFull(),
+            self::FIELD_COMPANY_AGENT_CLUSTER_ID =>
+                $this->getCompanyFormationAgentId()
         ];
     }
 
