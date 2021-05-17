@@ -5,7 +5,8 @@ namespace Kompli\Konnect\Model;
 use Kompli\Konnect\Helper\Enum\CorporateStatus as EnumStatus;
 use Kompli\Konnect\Iterator\{
     Officers as IttOfficers,
-    PSCs as IttPSCs
+    PSCs as IttPSCs,
+    Corporates as IttCorporates
 };
 
 class Corporate extends KonnectAbstract
@@ -31,6 +32,7 @@ class Corporate extends KonnectAbstract
     const FIELD_OFFICERS                    = 'Officers';
     const FIELD_NOC_NOT_ADDING_UP           = 'NoCNotAddingUp';
     const FIELD_PSCS                        = 'PSCs';
+    const FIELD_PSC                         = 'PSC';
     const FIELD_ACTS_AS_PSC                 = 'ActsAsPsc';
     const FIELD_LINKED_ADDRESSES            = 'LinkedAddresses';
     const FIELD_CHARGES                     = 'Charges';
@@ -38,7 +40,7 @@ class Corporate extends KonnectAbstract
     const FIELD_ICO_REGISTER                = 'ICORegisterEntries';
     const FIELD_OWNERSHIP_STRUCTURE         = 'OwnershipStructure';
     const FIELD_VAT                         = 'VAT';
-    const FIELD_REQUESTOR                   = 'Requestor';
+    const FIELD_POSITIONS                   = 'Positions';
 
     const PRIMARY_KEY              = [
         self::FIELD_COMPANY_NUMBER,
@@ -203,9 +205,16 @@ class Corporate extends KonnectAbstract
         return new IttPSCs($this->_getField(self::FIELD_PSCS, []));
     }
 
-    public function getActsAsPsc() : array
+    public function getPSC() : array
     {
-        return $this->_getField(self::FIELD_ACTS_AS_PSC, []);
+        return $this->_getField(self::FIELD_PSC, []);
+    }
+
+    public function getActsAsPsc() : IttCorporates
+    {
+        return new IttCorporates(
+            $this->_getField(self::FIELD_ACTS_AS_PSC, [])
+        );
     }
 
     public function getLinkedAddresses() : array
@@ -252,10 +261,51 @@ class Corporate extends KonnectAbstract
         );
     }
 
+    public function outputActsAsPsc() : array
+    {
+        $strStatus = null;
+        if (!is_null($this->getCurrentStatus())) {
+            $strStatus = $this->getCurrentStatus()->getId();
+        }
+
+        return [
+            self::FIELD_COMPANY_NUMBER      => $this->getCompanyNumber(),
+            self::FIELD_JURISDICTION_CODE   => $this->getJurisdictionCode(),
+            self::FIELD_NAME                => $this->getName(),
+            self::FIELD_COMPANY_TYPE        => $this->getCompanyType(),
+            self::FIELD_CURRENT_STATUS      => $strStatus,
+            self::FIELD_INCORPORATION_DATE  => $this->getIncorporationDate(),
+            self::FIELD_DISSOLUTION_DATE    => $this->getDissolutionDate(),
+            self::FIELD_REGISTRY_URL        => $this->getRegistryUrl(),
+            self::FIELD_PSC                 => $this->getPSC(),
+            self::FIELD_REGISTERED_ADDRESS  =>
+                $this->getRegisteredAddressInFull()
+        ];
+    }
+
+    public function outputOfficer() : array
+    {
+        $strStatus = null;
+        if (!is_null($this->getCurrentStatus())) {
+            $strStatus = $this->getCurrentStatus()->getId();
+        }
+
+        return [
+            self::FIELD_POSITIONS          => $this->getPositions(),
+            self::FIELD_KONNECT_ID         => $this->getKonnectId(),
+            self::FIELD_CORPORATE_ID       => $this->getCorporateId(),
+            self::FIELD_NAME               => $this->getName(),
+            self::FIELD_CURRENT_STATUS     => $strStatus,
+            self::FIELD_INCORPORATION_DATE => $this->getIncorporationDate(),
+            self::FIELD_DISSOLUTION_DATE   => $this->getDissolutionDate(),
+        ];
+    }
+
     public function output() : array
     {
         $ittOfficers = $this->getOfficers();
         $ittPSCs = $this->getPSCs();
+        $ittCorpActAsPsc = $this->getActsAsPsc();
 
         $arrOfficers = [];
         foreach ($ittOfficers as $modelOfficer) {
@@ -265,6 +315,11 @@ class Corporate extends KonnectAbstract
         $arrPSCs = [];
         foreach ($ittPSCs as $modelPSC) {
             $arrPSCs[] = $modelPSC->output();
+        }
+
+        $arrCorpActAsPsc = [];
+        foreach ($ittCorpActAsPsc as $modelCorpActAsPsc) {
+            $arrCorpActAsPsc[] = $modelCorpActAsPsc->outputActsAsPsc();
         }
 
         $strStatus = null;
@@ -292,7 +347,7 @@ class Corporate extends KonnectAbstract
             self::FIELD_OFFICERS => $arrOfficers,
             self::FIELD_NOC_NOT_ADDING_UP => $this->getNocNotAddingUp(),
             self::FIELD_PSCS => $arrPSCs,
-            self::FIELD_ACTS_AS_PSC => $this->getActsAsPsc(),
+            self::FIELD_ACTS_AS_PSC => $arrCorpActAsPsc,
             self::FIELD_LINKED_ADDRESSES => $this->getLinkedAddresses(),
             self::FIELD_CHARGES => $this->getCharges(),
             self::FIELD_ICO_REGISTER => $this->getICORegisterEntries(),
