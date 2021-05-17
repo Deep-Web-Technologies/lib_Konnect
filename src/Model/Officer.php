@@ -5,31 +5,53 @@ namespace Kompli\Konnect\Model;
 use Kompli\Konnect\Helper\BitFlags\OfficerRole;
 use Kompli\Konnect\Helper\Enum\OfficerType;
 use Exception;
+use Kompli\Konnect\Iterator\{
+    Corporates as IttCorporates,
+    PSCs as IttPSCs,
+    Addresses as IttAddresses
+};
+use Kompli\Konnect\Model\Address as ModelAddress;
 
 class Officer extends KonnectAbstract
 {
-    const FIELD_ID           = 'Id';
-    const FIELD_NAME         = 'Name';
-    const FIELD_FIRST_NAME   = 'FirstName';
-    const FIELD_LAST_NAME    = 'LastName';
-    const FIELD_OFFICER_ROLE = 'OfficerRole';
-    const FIELD_POSITION     = 'Position';
-    const FIELD_START_DATE   = 'StartDate';
-    const FIELD_END_DATE     = 'EndDate';
-    const FIELD_NATIONALITY  = 'Nationality';
-    const FIELD_PARTIAL_DOB  = 'PartialDateOfBirth';
-    const FIELD_ADDRESS_PK   = 'AddressPK';
-    const FIELD_TYPE         = 'Type';
-    const FIELD_OCR_ID       = 'OfficerClusterRootId';
-    const FIELD_ADDRESS      = 'AddressInFull';
-    const FIELD_PREVIOUS_NAMES = 'PreviousNames';
-    const FIELD_COMPANY_AGENT_CLUSTER_ID = 'CompanyFormationAgentClusterId';
-    const FIELD_KONNECT_ID   = 'KonnectId';
+    const FIELD_ID                         = 'Id';
+    const FIELD_TITLE                      = 'Title';
+    const FIELD_NAME                       = 'Name';
+    const FIELD_FIRST_NAME                 = 'FirstName';
+    const FIELD_LAST_NAME                  = 'LastName';
+    const FIELD_OFFICER_ROLE               = 'OfficerRole';
+    const FIELD_POSITION                   = 'Position';
+    const FIELD_OCCUPATION                 = 'Occupation';
+    const FIELD_START_DATE                 = 'StartDate';
+    const FIELD_END_DATE                   = 'EndDate';
+    const FIELD_NATIONALITY                = 'Nationality';
+    const FIELD_PARTIAL_DOB                = 'PartialDateOfBirth';
+    const FIELD_ADDRESS_PK                 = 'AddressPK';
+    const FIELD_TYPE                       = 'Type';
+    const FIELD_OCR_ID                     = 'OfficerClusterRootId';
+    const FIELD_ADDRESS_IN_FULL            = 'AddressInFull';
+    const FIELD_PREVIOUS_NAMES             = 'PreviousNames';
+    const FIELD_COMPANY_AGENT_CLUSTER_ID   = 'CompanyFormationAgentClusterId';
+    const FIELD_COMPANY_AGENT_CLUSTER_SIZE = 'CompanyFormationAgentClusterSize';
+    const FIELD_COUNTRY_OF_RESIDENCE       = 'CountryOfResidence';
+    const FIELD_ADDRESS                    = 'Address';
+    const FIELD_OTHER_NAMES                = 'OtherNames';
+    const FIELD_OTHER_DOB                  = 'OtherDoB';
+    const FIELD_OTHER_OCCUPATIONS          = 'OtherOccupations';
+    const FIELD_OTHER_NATIONALITIES        = 'OtherNationalities';
+    const FIELD_OTHER_POSITIONS            = 'OtherPositions';
+    const FIELD_CURRENT_ADDRESSES          = 'CurrentAddresses';
+    const FIELD_ULT_OWNERSHIP_STRUCT       = 'UltimateOwnershipStructure';
+    const FIELD_CORP_APPOINTMENT           = 'FirstCorporateAppointment';
+    const FIELD_CORPORATES                 = 'Corporates';
+    const FIELD_ACTS_AS_PSC                = 'ActsAsPsc';
+    const FIELD_LINKED_ADDRESSES           = 'LinkedAddresses';
 
     const PRIMARY_KEY        = self::FIELD_ID;
 
     const FIELDS = [
         self::FIELD_ID,
+        self::FIELD_TITLE,
         self::FIELD_NAME,
         self::FIELD_FIRST_NAME,
         self::FIELD_LAST_NAME,
@@ -42,8 +64,16 @@ class Officer extends KonnectAbstract
         self::FIELD_ADDRESS_PK,
         self::FIELD_TYPE,
         self::FIELD_OCR_ID,
+        self::FIELD_ADDRESS_IN_FULL,
+        self::FIELD_PREVIOUS_NAMES,
         self::FIELD_ADDRESS,
-        self::FIELD_PREVIOUS_NAMES
+        self::FIELD_OTHER_NAMES,
+        self::FIELD_OTHER_DOB,
+        self::FIELD_OTHER_OCCUPATIONS,
+        self::FIELD_OTHER_NATIONALITIES,
+        self::FIELD_OTHER_POSITIONS,
+        self::FIELD_CORP_APPOINTMENT,
+        self::FIELD_ACTS_AS_PSC,
     ];
 
     public static function getFields() : array
@@ -64,6 +94,11 @@ class Officer extends KonnectAbstract
     public function getKonnectId() : ?string
     {
         return $this->_getField(self::FIELD_KONNECT_ID, null);
+    }
+
+    public function getTitle() : ?string
+    {
+        return $this->_getField(self::FIELD_TITLE, null);
     }
 
     public function getName() : ?string
@@ -95,6 +130,29 @@ class Officer extends KonnectAbstract
         return $this->_getField(self::FIELD_POSITION, null);
     }
 
+    public function getOccupation() : ?string
+    {
+        return $this->_getField(self::FIELD_OCCUPATION, null);
+    }
+
+    public function getAddress() : ModelAddress
+    {
+        return new ModelAddress($this->_getField(self::FIELD_ADDRESS, []));
+    }
+
+    public function getCorporates() : IttCorporates
+    {
+        return new IttCorporates(
+            $this->_getField(self::FIELD_CORPORATES, [])
+        );
+    }
+    public function getLinkedAddresses() : IttAddresses
+    {
+        return new IttAddresses(
+            $this->_getField(self::FIELD_LINKED_ADDRESSES, [])
+        );
+    }
+
     public function getStartDate() : ?string
     {
         return $this->_getField(self::FIELD_START_DATE, null);
@@ -108,6 +166,11 @@ class Officer extends KonnectAbstract
     public function getNationality() : ?string
     {
         return $this->_getField(self::FIELD_NATIONALITY, null);
+    }
+
+    public function getCountryOfResidence() : ?string
+    {
+        return $this->_getField(self::FIELD_COUNTRY_OF_RESIDENCE, null);
     }
 
     public function getPartialDateOfBirth() : ?string
@@ -136,7 +199,7 @@ class Officer extends KonnectAbstract
 
     public function getAddressInFull() : ?string
     {
-        return $this->_getField(self::FIELD_ADDRESS, null);
+        return $this->_getField(self::FIELD_ADDRESS_IN_FULL, null);
     }
 
     public function getCompanyFormationAgentId() : ?int
@@ -144,9 +207,61 @@ class Officer extends KonnectAbstract
         return $this->_getField(self::FIELD_COMPANY_AGENT_CLUSTER_ID, null);
     }
 
+    public function getCompanyFormationAgentClusterSize() : ?int
+    {
+        return $this->_getField(self::FIELD_COMPANY_AGENT_CLUSTER_SIZE, null);
+    }
+
     public function getPreviousNames() : array
     {
         return $this->_getField(self::FIELD_PREVIOUS_NAMES, []);
+    }
+
+    public function getOtherNames() : array
+    {
+        return $this->_getField(self::FIELD_OTHER_NAMES, []);
+    }
+
+    public function getOtherDoB() : array
+    {
+        return $this->_getField(self::FIELD_OTHER_DOB, []);
+    }
+
+    public function getOtherOccupations() : array
+    {
+        return $this->_getField(self::FIELD_OTHER_OCCUPATIONS, []);
+    }
+
+    public function getOtherNationalities() : array
+    {
+        return $this->_getField(self::FIELD_OTHER_NATIONALITIES, []);
+    }
+
+    public function getFirstCorporateAppointment() : array
+    {
+        return $this->_getField(self::FIELD_CORP_APPOINTMENT, []);
+    }
+
+    public function getOtherPositions() : array
+    {
+        return $this->_getField(self::FIELD_OTHER_POSITIONS, []);
+    }
+
+    public function getActsAsPsc() : IttCorporates
+    {
+        return new IttCorporates(
+            $this->_getField(self::FIELD_ACTS_AS_PSC, [])
+        );
+    }
+
+    public function getCurrentAddresses() : array
+    {
+        return $this->_getField(self::FIELD_CURRENT_ADDRESSES, []);
+    }
+
+    public function getUltimateOwnershipStructure() : array
+    {
+        return $this->_getField(self::FIELD_ULT_OWNERSHIP_STRUCT, []);
     }
 
     public function isActive() : bool
@@ -176,6 +291,23 @@ class Officer extends KonnectAbstract
 
     public function output() : array
     {
+        $ittCorporates = $this->getCorporates();
+        $ittCorpActAsPsc = $this->getActsAsPsc();
+        $ittLinkedAddresses = $this->getLinkedAddresses();
+
+        $arrCorporates = [];
+        foreach ($ittCorporates as $modelCorporate) {
+            $arrCorporates[] = $modelCorporate->outputOfficer();
+        }
+        $arrCorpActAsPsc = [];
+        foreach ($ittCorpActAsPsc as $modelCorpActAsPsc) {
+            $arrCorpActAsPsc[] = $modelCorpActAsPsc->outputActsAsPsc();
+        }
+        $arrLinkedAddresses = [];
+        foreach ($ittLinkedAddresses as $modelLinkedAddresses) {
+            $arrLinkedAddresses[] = $modelLinkedAddresses->outputLinked();
+        }
+
         $bitRole = $this->getOfficerRole();
         $intRole = null;
         if (!is_null($bitRole)) {
@@ -188,24 +320,45 @@ class Officer extends KonnectAbstract
         }
 
         return [
-            self::FIELD_ID              => $this->getId(),
-            self::FIELD_KONNECT_ID      => $this->getKonnectId(),
-            self::FIELD_NAME            => $this->getName(),
-            self::FIELD_FIRST_NAME      => $this->getFirstName(),
-            self::FIELD_LAST_NAME       => $this->getLastName(),
-            self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames(),
-            self::FIELD_OFFICER_ROLE    => $intRole,
-            self::FIELD_POSITION        => $this->getPosition(),
-            self::FIELD_START_DATE      => $this->getStartDate(),
-            self::FIELD_END_DATE        => $this->getEndDate(),
-            self::FIELD_NATIONALITY     => $this->getNationality(),
-            self::FIELD_PARTIAL_DOB     => $this->getPartialDateOfBirth(),
-            self::FIELD_ADDRESS_PK      => $this->getAddressPK(),
-            self::FIELD_TYPE            => $strType,
-            self::FIELD_OCR_ID          => $this->getOfficerClusterRootId(),
-            self::FIELD_ADDRESS         => $this->getAddressInFull(),
+            self::FIELD_ID => $this->getId(),
+            self::FIELD_KONNECT_ID => $this->getKonnectId(),
+            self::FIELD_TITLE => $this->getTitle(),
+            self::FIELD_NAME => $this->getName(),
+            self::FIELD_FIRST_NAME => $this->getFirstName(),
+            self::FIELD_LAST_NAME => $this->getLastName(),
+            self::FIELD_PREVIOUS_NAMES => $this->getPreviousNames(),
+            self::FIELD_OFFICER_ROLE => $intRole,
+            self::FIELD_POSITION => $this->getPosition(),
+            self::FIELD_OCCUPATION => $this->getOccupation(),
+            self::FIELD_START_DATE => $this->getStartDate(),
+            self::FIELD_END_DATE => $this->getEndDate(),
+            self::FIELD_NATIONALITY => $this->getNationality(),
+            self::FIELD_COUNTRY_OF_RESIDENCE => $this->getCountryOfResidence(),
+            self::FIELD_PARTIAL_DOB => $this->getPartialDateOfBirth(),
+            self::FIELD_ADDRESS_PK => $this->getAddressPK(),
+            self::FIELD_TYPE => $strType,
+            self::FIELD_OCR_ID => $this->getOfficerClusterRootId(),
+            self::FIELD_ADDRESS_IN_FULL => $this->getAddressInFull(),
+            self::FIELD_RETIEVED_AT => $this->getRetrievedAt(),
             self::FIELD_COMPANY_AGENT_CLUSTER_ID =>
-                $this->getCompanyFormationAgentId()
+                $this->getCompanyFormationAgentId(),
+            self::FIELD_COMPANY_AGENT_CLUSTER_SIZE =>
+                $this->getCompanyFormationAgentClusterSize(),
+            self::FIELD_OTHER_NAMES => $this->getOtherNames(),
+            self::FIELD_ADDRESS => $this->getAddress()->outputOfficer(),
+            self::FIELD_OTHER_DOB => $this->getOtherDoB(),
+            self::FIELD_OTHER_OCCUPATIONS => $this->getOtherOccupations(),
+            self::FIELD_OTHER_NATIONALITIES => $this->getOtherNationalities(),
+            self::FIELD_CORP_APPOINTMENT =>
+                $this->getFirstCorporateAppointment(),
+            self::FIELD_CORPORATES => $arrCorporates,
+            self::FIELD_OTHER_POSITIONS => $this->getOtherPositions(),
+            self::FIELD_ACTS_AS_PSC => $arrCorpActAsPsc,
+            self::FIELD_LINKED_ADDRESSES => $arrLinkedAddresses,
+            self::FIELD_CURRENT_ADDRESSES => $this->getCurrentAddresses(),
+            self::FIELD_ULT_OWNERSHIP_STRUCT =>
+                $this->getUltimateOwnershipStructure(),
+            self::FIELD_REQUESTOR => $this->getRequestor()
         ];
     }
 
@@ -213,9 +366,9 @@ class Officer extends KonnectAbstract
     {
         $arrEntityData = array_filter(
             [
-                self::FIELD_ADDRESS => $this->getAddressInFull(),
-                self::FIELD_PARTIAL_DOB => $this->getPartialDateOfBirth(),
-                self::FIELD_PREVIOUS_NAMES => $this->getPreviousNames()
+                self::FIELD_ADDRESS_IN_FULL => $this->getAddressInFull(),
+                self::FIELD_PARTIAL_DOB     => $this->getPartialDateOfBirth(),
+                self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames()
             ]
         );
 

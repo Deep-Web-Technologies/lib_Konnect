@@ -21,6 +21,24 @@ abstract class KonnectAbstract extends ModelAbstract
     const FIELD_INCLUDE_IN_PRODUCT = 'IncludeInProduct';
     const FIELD_DOC_TYPE           = 'DocumentType';
     const FIELD_COUNTRY            = 'Country';
+    const FIELD_KONNECT_ID         = 'KonnectId';
+    const FIELD_RETIEVED_AT        = 'RetrievedAt';
+    const FIELD_REQUESTOR          = 'Requestor';
+
+    public function getKonnectId() : ?string
+    {
+        return $this->_getField(self::FIELD_KONNECT_ID, null);
+    }
+
+    public function getRequestor() : ?string
+    {
+        return $this->_getField(self::FIELD_REQUESTOR, null);
+    }
+
+    public function getRetrievedAt() : ?string
+    {
+        return $this->_getField(self::FIELD_RETIEVED_AT, null);
+    }
 
     public function getSendType() : ?SendType
     {

@@ -10,7 +10,8 @@ use Kompli\Konnect\Exception\{
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client as GuzzleClient;
 use Kompli\Konnect\Model\{
-    Corporate as ModelCorporate
+    Corporate as ModelCorporate,
+    Officer as ModelOfficer,
 };
 use Kompli\Konnect\Iterator\SearchOfficers as IttSearchOfficers;
 
@@ -74,6 +75,25 @@ class Client
         return $modelCorporate;
     }
 
+    public function getOfficer(int $intOfficerId) : ?ModelOfficer
+    {
+        try {
+            $response = $this->_client->get("/officer/$intOfficerId");
+        } catch (RequestException $e) {
+            if ($e->getResponse()->getStatusCode() === 404) {
+                throw new Error404("Officer not found. ID: $intOfficerId");
+            } else {
+                throw $e;
+            }
+        }
+
+        $arrContent = json_decode($response->getBody()->getContents(), true);
+
+        $modelOfficer = KonnectFactory::createOfficer($arrContent);
+
+        return $modelOfficer;
+     }
+  
     public function searchOfficer(
         string $strName,
         string $strAddress = '',

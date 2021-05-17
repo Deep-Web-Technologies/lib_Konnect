@@ -4,7 +4,8 @@ namespace Kompli\Konnect\Model;
 use Kompli\Konnect\Helper\Enum\CorporateStatus as EnumStatus;
 use Kompli\Konnect\Iterator\{
     Officers as IttOfficers,
-    PSCs as IttPSCs
+    PSCs as IttPSCs,
+    Corporates as IttCorporates
 };
 use PHPUnit\Framework\TestCase;
 use Kompli\Konnect\Helper\Enum\QEDProductSendType;
@@ -50,7 +51,6 @@ class CorporateTest extends TestCase
             Corporate::FIELD_CORPORATE_FILINGS   => [],
             Corporate::FIELD_OFFICERS            => [],
             Corporate::FIELD_PSCS                => [],
-            Corporate::FIELD_ACTS_AS_PSC         => [],
             Corporate::FIELD_LINKED_ADDRESSES    => [],
             Corporate::FIELD_CHARGES             => [],
             Corporate::FIELD_OWNERSHIP_STRUCTURE => [],
@@ -86,7 +86,6 @@ class CorporateTest extends TestCase
             Corporate::FIELD_REGISTERED_ADDRESS  => $modelCorporate->getRegisteredAddressInFull(),
             Corporate::FIELD_ADDRESS_PK          => $modelCorporate->getAddressPK(),
             Corporate::FIELD_CORPORATE_FILINGS   => $modelCorporate->getCorporateFilings(),
-            Corporate::FIELD_ACTS_AS_PSC         => $modelCorporate->getActsAsPsc(),
             Corporate::FIELD_LINKED_ADDRESSES    => $modelCorporate->getLinkedAddresses(),
             Corporate::FIELD_CHARGES             => $modelCorporate->getCharges(),
             Corporate::FIELD_OWNERSHIP_STRUCTURE => $modelCorporate->getOwnershipStructure(),
@@ -109,6 +108,7 @@ class CorporateTest extends TestCase
         $this->assertEquals($arrCorporateData, $arrGetters);
         $this->assertInstanceOf(IttOfficers::class, $modelCorporate->getOfficers());
         $this->assertInstanceOf(IttPSCs::class, $modelCorporate->getPSCs());
+        $this->assertInstanceOf(IttCorporates::class, $modelCorporate->getActsAsPsc());
     }
 
     public function testHasAutoRunFields()
@@ -151,5 +151,45 @@ class CorporateTest extends TestCase
         $model = new Corporate($arrData);
 
         $this->assertEquals($arrData, $model->outputEntityData());
+    }
+
+    public function testOutput()
+    {
+        $arrData = [
+            Corporate::FIELD_KONNECT_ID => 'KonnectId',
+            Corporate::FIELD_COMPANY_NUMBER => 'company number',
+            Corporate::FIELD_JURISDICTION_CODE => 'jurisdiction',
+            Corporate::FIELD_NAME => 'name',
+            Corporate::FIELD_COMPANY_TYPE => 'company type',
+            Corporate::FIELD_CURRENT_STATUS => 'Active',
+            Corporate::FIELD_INCORPORATION_DATE => 'incorporation date',
+            Corporate::FIELD_DISSOLUTION_DATE => 'dissolution date',
+            Corporate::FIELD_REGISTERED_ADDRESS => 'registered address in full',
+            Corporate::FIELD_ADDRESS_PK => 1,
+            Corporate::FIELD_HISTORIC_NAMES => ['historic name'],
+            Corporate::FIELD_NATURE_OF_BUSINESS => ['nature of business'],
+            Corporate::FIELD_CORPORATE_FILINGS => ['corporate filings'],
+            Corporate::FIELD_OFFICERS => [],
+            Corporate::FIELD_NOC_NOT_ADDING_UP => true,
+            Corporate::FIELD_PSCS => [],
+            Corporate::FIELD_ACTS_AS_PSC => [],
+            Corporate::FIELD_LINKED_ADDRESSES => [],
+            Corporate::FIELD_CHARGES => [],
+            Corporate::FIELD_ICO_REGISTER => [],
+            Corporate::FIELD_OWNERSHIP_STRUCTURE => [],
+            Corporate::FIELD_PREVIOUS_NAMES => ['previous name'],
+            Corporate::FIELD_RETIEVED_AT => 'retrieved at',
+            Corporate::FIELD_REGISTRY_URL => 'registry URL',
+            Corporate::FIELD_ACCOUNTS_REF_DATE => 'accounts reference date',
+            Corporate::FIELD_ACCOUNTS_LAST_UP_DATE => 'last up to date',
+            Corporate::FIELD_ANNUAL_RETURN_LAST_UP_DATE => 'annual last up to date',
+            Corporate::FIELD_INDUSTRY_CODES => 'industry codes',
+            Corporate::FIELD_VAT => [],
+            Corporate::FIELD_REQUESTOR => 'requestor'
+        ];
+
+        $model = new Corporate($arrData);
+
+        $this->assertEquals($arrData, $model->output());
     }
 }
