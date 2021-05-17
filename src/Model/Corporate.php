@@ -17,16 +17,12 @@ class Corporate extends KonnectAbstract
     const FIELD_CURRENT_STATUS              = 'CurrentStatus';
     const FIELD_INCORPORATION_DATE          = 'IncorporationDate';
     const FIELD_DISSOLUTION_DATE            = 'DissolutionDate';
-
     const FIELD_PREVIOUS_NAMES              = 'PreviousNames';
-    const FIELD_RETIEVED_AT                 = 'RetrievedAt';
     const FIELD_REGISTRY_URL                = 'RegistryUrl';
     const FIELD_ACCOUNTS_REF_DATE           = 'AccountsReferenceDate';
     const FIELD_ACCOUNTS_LAST_UP_DATE       = 'AccountsLastMadeUpDate';
     const FIELD_ANNUAL_RETURN_LAST_UP_DATE  = 'AnnualReturnLastMadeUpDate';
     const FIELD_INDUSTRY_CODES              = 'IndustryCodes';
-    const FIELD_KONNECT_ID                  = 'KonnectId';
-
     const FIELD_REGISTERED_ADDRESS          = 'RegisteredAddressInFull';
     const FIELD_ADDRESS_PK                  = 'AddressPK';
     const FIELD_HISTORIC_NAMES              = 'HistoricNames';
@@ -152,11 +148,6 @@ class Corporate extends KonnectAbstract
         return $this->_getField(self::FIELD_PREVIOUS_NAMES, null);
     }
 
-    public function getRetrievedAt() : ?string
-    {
-        return $this->_getField(self::FIELD_RETIEVED_AT, null);
-    }
-
     public function getNocNotAddingUp() : ?bool
     {
         return $this->_getField(self::FIELD_NOC_NOT_ADDING_UP, null);
@@ -187,19 +178,14 @@ class Corporate extends KonnectAbstract
         return $this->_getField(self::FIELD_INDUSTRY_CODES, null);
     }
 
-    public function getKonnectId() : ?string
-    {
-        return $this->_getField(self::FIELD_KONNECT_ID, null);
-    }
-
-    public function getRequestor() : ?string
-    {
-        return $this->_getField(self::FIELD_REQUESTOR, null);
-    }
-
     public function getVAT() : array
     {
         return $this->_getField(self::FIELD_VAT, []);
+    }
+
+    public function getPositions() : array
+    {
+        return $this->_getField(self::FIELD_POSITIONS, []);
     }
 
     public function getICORegisterEntries() : array

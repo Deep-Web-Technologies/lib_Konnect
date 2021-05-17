@@ -18,7 +18,10 @@ class AbstractTest extends TestCase
             KonnectAbstract::FIELD_TARGET_NAME => 'testName',
             KonnectAbstract::FIELD_FILE_PATHS => ['path'],
             KonnectAbstract::FIELD_DOC_TYPE => YotiDocumentType::TYPE_PASSPORT,
-            KonnectAbstract::FIELD_COUNTRY => 'gbr'
+            KonnectAbstract::FIELD_COUNTRY => 'gbr',
+            KonnectAbstract::FIELD_KONNECT_ID => 'KonnectId',
+            KonnectAbstract::FIELD_REQUESTOR => 'requestor',
+            KonnectAbstract::FIELD_RETIEVED_AT => 'retrieved at',
         ];
         $model = new Officer($arrInput);
 
@@ -32,6 +35,9 @@ class AbstractTest extends TestCase
             KonnectAbstract::FIELD_FILE_PATHS => $model->getFilePaths(),
             KonnectAbstract::FIELD_DOC_TYPE => $model->getDocumentType()->getId(),
             KonnectAbstract::FIELD_COUNTRY => $model->getCountry(),
+            KonnectAbstract::FIELD_KONNECT_ID => $model->getKonnectId(),
+            KonnectAbstract::FIELD_REQUESTOR => $model->getRequestor(),
+            KonnectAbstract::FIELD_RETIEVED_AT => $model->getRetrievedAt(),
         ];
 
         $this->assertEquals($arrInput, $arrGetters);
