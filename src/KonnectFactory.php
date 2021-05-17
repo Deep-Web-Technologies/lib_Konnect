@@ -3,7 +3,7 @@
 namespace Kompli\Konnect;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Kompli\Konnect\Model\{KonnectAbstract, Corporate};
+use Kompli\Konnect\Model\{Officer, Corporate};
 
 class KonnectFactory
 {
@@ -21,12 +21,17 @@ class KonnectFactory
         return new Client($guzzleClient);
     }
 
-    public static function createKonnectEntity(
+    public static function createCorporate(
         array $arrContent
-    ) : KonnectAbstract
+    ) : Corporate
     {
-        if (!empty($arrContent['CompanyNumber'])) {
-            return new Corporate($arrContent);
-        }
+        return new Corporate($arrContent);
+    }
+
+    public static function createOfficer(
+        array $arrContent
+    ) : Officer
+    {
+        return new Officer($arrContent);
     }
 }
