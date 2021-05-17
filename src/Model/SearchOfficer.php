@@ -109,7 +109,9 @@ class SearchOfficer extends KonnectAbstract
 
     public function getResignedReason() : EnumResignedReason
     {
-        return $this->_getFieldOrFail(self::FIELD_RESIGNED_REASON);
+        return EnumResignedReason::createFromOutput(
+            $this->_getFieldOrFail(self::FIELD_RESIGNED_REASON)
+        );
     }
 
     public function getClusterId() : int
