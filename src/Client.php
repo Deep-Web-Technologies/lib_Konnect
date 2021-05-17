@@ -3,13 +3,17 @@
 namespace Kompli\Konnect;
 
 use Kompli\Konnect\Helper\Enum\CorporateStatus;
-use Kompli\Konnect\Exception\Error404;
+use Kompli\Konnect\Exception\{
+    Error404,
+    Error400
+};
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client as GuzzleClient;
 use Kompli\Konnect\Model\{
     Corporate as ModelCorporate,
     Officer as ModelOfficer,
 };
+use Kompli\Konnect\Iterator\SearchOfficers as IttSearchOfficers;
 
 
 class Client
@@ -88,5 +92,31 @@ class Client
         $modelOfficer = KonnectFactory::createOfficer($arrContent);
 
         return $modelOfficer;
+     }
+  
+    public function searchOfficer(
+        string $strName,
+        string $strAddress = '',
+        string $strCompanyName = '',
+        string $strCRN = ''
+    ) : IttSearchOfficers
+    {
+        $strUrl = "/search/officer";
+
+        $response = $this->_client->post(
+            $strUrl,
+            [
+                'form_params' =>[
+                    'OfficerName' => $strName,
+                    'Address' => $strAddress,
+                    'CorporateName' => $strCompanyName,
+                    'CompanyNumber' => $strCRN,
+                ],
+            ]
+        );
+
+        $arrContent = json_decode($response->getBody()->getContents(), true);
+
+        return new IttSearchOfficers($arrContent);
     }
 }
