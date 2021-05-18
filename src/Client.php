@@ -93,7 +93,7 @@ class Client
 
         return $modelOfficer;
      }
-  
+
     public function searchOfficer(
         string $strName,
         string $strAddress = '',
