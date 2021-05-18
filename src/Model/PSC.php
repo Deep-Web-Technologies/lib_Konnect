@@ -131,10 +131,9 @@ class PSC extends KonnectAbstract
 
     public function output() : array
     {
-        $enumKind = $this->getKind();
         $intKind  = null;
-        if (!is_null($enumKind)) {
-            $intKind = $enumKind->getId();
+        if (!is_null($this->getKind())) {
+            $intKind = $this->getKind()->getId();
         }
 
         return [
