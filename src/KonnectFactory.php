@@ -11,7 +11,8 @@ class KonnectFactory
     {
         $guzzleClient = new GuzzleClient(
             [
-                "base_uri" => "https://api.konnect.dev-live.deepwebtechnology.com/",
+                "base_uri" =>
+                    "https://api.konnect.dev-live.deepwebtechnology.com/",
                 "headers" => [
                     "Accept"        => "application/json",
                     "Authorization" => $strApiKey

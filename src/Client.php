@@ -69,5 +69,4 @@ class Client
 
         return $modelCorporate;
     }
-
 }
