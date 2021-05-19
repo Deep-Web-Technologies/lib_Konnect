@@ -9,6 +9,11 @@
 
 namespace Kompli\Konnect\Helper\BitFlags;
 
+/**
+ * This class and mirrors
+ * prod_CommonCode/src/php/Common/Helper/BitFlags/AddressSource
+ * changes made here should also be made in CommonCode
+ */
 class AddressSource extends BitFlagsAbstract
 {
     const SOURCE_OFFICER = "officer";

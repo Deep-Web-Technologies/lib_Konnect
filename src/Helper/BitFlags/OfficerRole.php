@@ -24,6 +24,12 @@ namespace Kompli\Konnect\Helper\BitFlags;
  *
  * @author Alex Jordan
  */
+
+/**
+ * This class and mirrors
+ * prod_CommonCode/src/php/Common/Helper/BitFlags/OfficerRole
+ * changes made here should also be made in CommonCode
+ */
 class OfficerRole extends BitFlagsAbstract
 {
     const POS_DIRECTOR = 'director';

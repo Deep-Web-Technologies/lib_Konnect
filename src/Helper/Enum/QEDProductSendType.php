@@ -3,7 +3,11 @@
 namespace Kompli\Konnect\Helper\Enum;
 
 use Kompli\Konnect\Helper\Enum\EnumAbstract;
-
+/**
+ * This class and mirrors
+ * prod_CommonCode/src/php/Common/Helper/Enum/QEDProductSendType
+ * changes made here should also be made in CommonCode
+ */
 class QEDProductSendType extends EnumAbstract
 {
     const TYPE_EMAIL  = 1;

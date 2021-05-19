@@ -28,6 +28,12 @@ use Exception;
  *
  * @author Alex Jordan
  */
+
+ /**
+ * This class and mirrors
+ * prod_CommonCode/src/php/Common/Helper/Enum/PSCKind
+ * changes made here should also be made in CommonCode
+ */
 class PSCKind extends EnumAbstract
 {
     const KEY_INDIVIDUAL_PSC
