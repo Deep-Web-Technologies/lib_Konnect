@@ -1,6 +1,11 @@
 <?php
 namespace Kompli\Konnect\Helper\Enum;
 
+/**
+ * This class and mirrors
+ * prod_CommonCode/src/php/Common/Helper/Enum/CorporateStatus
+ * changes made here should also be made in CommonCode
+ */
 class CorporateStatus extends EnumAbstract
 {
     const STATUS_ACTIVE = 'Active';
