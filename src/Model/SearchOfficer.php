@@ -9,7 +9,7 @@ use Kompli\Konnect\Helper\Enum\{
 };
 use Kompli\Konnect\Iterator\SearchOfficers as Itt;
 
-class SearchOfficer extends KonnectAbstract
+class SearchOfficer extends ModelAbstract
 {
     const FIELD_TYPE = 'Type';
     const FIELD_ID = 'Id';
