@@ -13,7 +13,10 @@ use Kompli\Konnect\Model\{
     Corporate as ModelCorporate,
     Officer as ModelOfficer,
 };
-use Kompli\Konnect\Iterator\SearchOfficers as IttSearchOfficers;
+use Kompli\Konnect\Iterator\{
+    SearchOfficers as IttSearchOfficers,
+    SearchCorporates as IttSearchCorporates
+};
 
 
 class Client
@@ -70,7 +73,7 @@ class Client
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
-        $modelCorporate = KonnectFactory::createKonnectEntity($arrContent);
+        $modelCorporate = KonnectFactory::createCorporate($arrContent);
 
         return $modelCorporate;
     }
@@ -118,5 +121,36 @@ class Client
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
         return new IttSearchOfficers($arrContent);
+    }
+
+    public function searchCorporate(
+        ?string $strName,
+        ?CorporateStatus $enumStatus = null,
+        ?string $strJurisdiction = 'gb',
+        ?string $strCRN = '',
+        ?string $strAddress = ''
+    ) : IttSearchCorporates
+    {
+        $strUrl = "/search/corporate";
+
+        $arrPostParams = [
+            self::POST_COMPANY_NAME => $strName,
+            self::POST_JURISDICTION => $strJurisdiction,
+            self::POST_COMPANY_NUMBER => $strCRN,
+            self::POST_COMPANY_ADDRESS => $strAddress
+        ];
+
+        if (!is_null($enumStatus)) {
+            $arrPostParams[self::POST_COMPANY_STATUS] = [$enumStatus->getId()];
+        }
+
+        $response = $this->_client->post(
+            $strUrl,
+            ['json' => $arrPostParams]
+        );
+
+        $arrContent = json_decode($response->getBody()->getContents(), true);
+
+        return new IttSearchCorporates($arrContent);
     }
 }
