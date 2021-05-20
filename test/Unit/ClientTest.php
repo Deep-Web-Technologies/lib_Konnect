@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Kompli\Konnect\Model\{
     Corporate as ModelCorporate,
     Officer as ModelOfficer,
+    Search as ModelSearch
 };
 use Kompli\Konnect\Iterator\{
     SearchOfficers as IttSearchOfficers,
@@ -49,9 +50,9 @@ class KonnectClientTest extends TestCase
         );
         $this->assertInstanceOf(ModelCorporate::class, $client->getCorporate('testCRN'));
         $this->assertInstanceOf(ModelOfficer::class, $client->getOfficer(1234));
-        $this->assertInstanceOf(IttSearchCorporates::class, $client->searchCorporate('Name'));
+        $this->assertInstanceOf(ModelSearch::class, $client->searchCorporate('Name'));
         $this->assertInstanceOf(
-            IttSearchOfficers::class,
+            ModelSearch::class,
             $client->searchOfficer('Name', 'Address', 'CorporateName', 'CRN', 30)
         );
     }

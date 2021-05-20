@@ -12,10 +12,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use Kompli\Konnect\Model\{
     Corporate as ModelCorporate,
     Officer as ModelOfficer,
-};
-use Kompli\Konnect\Iterator\{
-    SearchOfficers as IttSearchOfficers,
-    SearchCorporates as IttSearchCorporates
+    Search as ModelSearch
 };
 
 
@@ -102,7 +99,7 @@ class Client
         string $strAddress = '',
         string $strCompanyName = '',
         string $strCRN = ''
-    ) : IttSearchOfficers
+    ) : ModelSearch
     {
         $strUrl = "/search/officer";
 
@@ -120,7 +117,7 @@ class Client
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
-        return new IttSearchOfficers($arrContent);
+        return new ModelSearch($arrContent);
     }
 
     public function searchCorporate(
@@ -129,7 +126,7 @@ class Client
         ?string $strJurisdiction = 'gb',
         ?string $strCRN = '',
         ?string $strAddress = ''
-    ) : IttSearchCorporates
+    ) : ModelSearch
     {
         $strUrl = "/search/corporate";
 
@@ -151,6 +148,6 @@ class Client
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
-        return new IttSearchCorporates($arrContent);
+        return new ModelSearch($arrContent);
     }
 }
