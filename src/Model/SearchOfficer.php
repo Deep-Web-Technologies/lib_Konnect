@@ -107,11 +107,9 @@ class SearchOfficer extends ModelAbstract
         return $this->_getFieldOrFail(self::FIELD_PREVIOUS_NAMES);
     }
 
-    public function getResignedReason() : EnumResignedReason
+    public function getResignedReason() : string
     {
-        return EnumResignedReason::createFromOutput(
-            $this->_getFieldOrFail(self::FIELD_RESIGNED_REASON)
-        );
+        return $this->_getFieldOrFail(self::FIELD_RESIGNED_REASON);
     }
 
     public function getClusterId() : int
@@ -144,8 +142,7 @@ class SearchOfficer extends ModelAbstract
             self::FIELD_END_DATE => $this->getEndDate(),
             self::FIELD_IS_ACTIVE => $this->getIsActive(),
             self::FIELD_PREVIOUS_NAMES => $this->getPreviousNames(),
-            self::FIELD_RESIGNED_REASON => $this->getResignedReason()
-                ->getResignedReason(),
+            self::FIELD_RESIGNED_REASON => $this->getResignedReason(),
             self::FIELD_CLUSTER_ID => $this->getClusterId(),
             self::FIELD_OFFICER_ID => $this->getOfficerId(),
             self::FIELD_OFFICER_TYPE => $this->getOfficerType()->getId(),
@@ -170,8 +167,7 @@ class SearchOfficer extends ModelAbstract
             self::FIELD_END_DATE => $this->getEndDate(),
             self::FIELD_IS_ACTIVE => $this->getIsActive(),
             self::FIELD_PREVIOUS_NAMES => $this->getPreviousNames(),
-            self::FIELD_RESIGNED_REASON => $this->getResignedReason()
-                ->getResignedReason(),
+            self::FIELD_RESIGNED_REASON => $this->getResignedReason(),
             self::FIELD_CLUSTER_ID => $this->getClusterId(),
             self::FIELD_OFFICER_ID => $this->getOfficerId(),
             self::FIELD_OFFICER_TYPE => $this->getOfficerType()->getId(),
