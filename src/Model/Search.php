@@ -67,7 +67,7 @@ class Search extends ModelAbstract
 
         $arrData = [];
         foreach ($itt as $modelSearch) {
-            $arrData[] = $itt->output();
+            $arrData[] = $modelSearch->output();
         }
 
         return [

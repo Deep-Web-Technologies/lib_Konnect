@@ -83,16 +83,7 @@ class SearchCorporate extends ModelAbstract
 
     public function getPreviousNames() : array
     {
-        $arrPreviousNames = [];
-        $strPrevious = $this->_getField(self::FIELD_PREVIOUS_NAMES, "");
-        if ($strPrevious) {
-            $arrPreviousNames = explode(
-                "|",
-                $strPrevious
-            );
-        }
-
-        return $arrPreviousNames;
+        return $this->_getField(self::FIELD_PREVIOUS_NAMES, []);
     }
 
     public function getHistoricNames() : IttHistNames

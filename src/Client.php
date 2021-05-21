@@ -95,10 +95,10 @@ class Client
      }
 
     public function searchOfficer(
-        string $strName,
-        string $strAddress = '',
-        string $strCompanyName = '',
-        string $strCRN = ''
+        ?string $strName,
+        ?string $strAddress = '',
+        ?string $strCompanyName = '',
+        ?string $strCRN = ''
     ) : ModelSearch
     {
         $strUrl = "/search/officer";
