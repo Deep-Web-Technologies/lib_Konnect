@@ -61,6 +61,62 @@ class Search extends ModelAbstract
         }
     }
 
+
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_search_officer",
+     *     type="object",
+     *     @OA\Property(
+     *         property="Count",
+     *         type="integer",
+     *         description="Count of results displayed"
+     *     ),
+     *     @OA\Property(
+     *         property="TotalCount",
+     *         type="integer",
+     *         description="Count of total results"
+     *     ),
+     *     @OA\Property(
+     *         property="Data",
+     *         type="array",
+     *         @OA\Items(
+     *             ref="#/components/schemas/lib_konnect_search_officer_item"
+     *         )
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
+
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_search_corporate",
+     *     type="object",
+     *     @OA\Property(
+     *         property="Count",
+     *         type="integer",
+     *         description="Count of results displayed"
+     *     ),
+     *     @OA\Property(
+     *         property="TotalCount",
+     *         type="integer",
+     *         description="Count of total results"
+     *     ),
+     *     @OA\Property(
+     *         property="Data",
+     *         type="array",
+     *         @OA\Items(
+     *             ref="#/components/schemas/lib_konnect_search_corporate_item"
+     *         )
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
     public function output($strType) : array
     {
         $itt = $this->getData($strType);

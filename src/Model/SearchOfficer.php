@@ -132,6 +132,76 @@ class SearchOfficer extends ModelAbstract
         return new Itt($this->_getField(self::FIELD_REST_OF_CLUSTER, []));
     }
 
+
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_search_officer_outputincluster",
+     *     type="object",
+     *     @OA\Property(
+     *         property="Name",
+     *         type="string",
+     *         description="Name of associated person"
+     *     ),
+     *     @OA\Property(
+     *         property="Corporate",
+     *         type="string",
+     *         description="Name of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="CompanyNumber",
+     *         type="string",
+     *         description="CRN of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="Address",
+     *         type="string",
+     *         description="Address of associated person"
+     *     ),
+     *     @OA\Property(
+     *         property="EndDate",
+     *         type="string",
+     *         description="Resignation date of person"
+     *     ),
+     *     @OA\Property(
+     *         property="IsActive",
+     *         type="string",
+     *         description="Current status of person"
+     *     ),
+     *     @OA\Property(
+     *         property="PreviousNames",
+     *         type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 description="Array of previous names the corporate has had"
+     *             )
+     *     ),
+     *     @OA\Property(
+     *         property="ResignedReason",
+     *         type="string",
+     *         enum={"Resigned", "Dissolved"},
+     *         description="Enum value indicating why the officer resigned"
+     *     ),
+     *     @OA\Property(
+     *         property="ClusterId",
+     *         type="integer",
+     *         description="The cluster id of the officers cluster"
+     *     ),
+     *     @OA\Property(
+     *         property="OfficerId",
+     *         type="integer",
+     *         description="The id of the officer"
+     *     ),
+     *     @OA\Property(
+     *         property="OfficerType",
+     *         type="string",
+     *         description="The type of the officer, either Person or Company"
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
     public function outputInCluster() : array
     {
         return [
@@ -149,6 +219,98 @@ class SearchOfficer extends ModelAbstract
         ];
     }
 
+
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_search_officer_item",
+     *     type="object",
+     *     @OA\Property(
+     *         property="Type",
+     *         type="string",
+     *         description="Type of corporate search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Id",
+     *         type="string",
+     *         description="Id of search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Weight",
+     *         type="string",
+     *         description="Weight of search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Name",
+     *         type="string",
+     *         description="Name of associated person"
+     *     ),
+     *     @OA\Property(
+     *         property="Corporate",
+     *         type="string",
+     *         description="Name of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="CompanyNumber",
+     *         type="string",
+     *         description="CRN of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="Address",
+     *         type="string",
+     *         description="Address of associated person"
+     *     ),
+     *     @OA\Property(
+     *         property="EndDate",
+     *         type="string",
+     *         description="Resignation date of person"
+     *     ),
+     *     @OA\Property(
+     *         property="IsActive",
+     *         type="string",
+     *         description="Current status of person"
+     *     ),
+     *     @OA\Property(
+     *         property="PreviousNames",
+     *         type="array",
+     *             @OA\Items(
+     *                 type="string",
+     *                 description="Array of previous names the corporate has had"
+     *             )
+     *     ),
+     *     @OA\Property(
+     *         property="ResignedReason",
+     *         type="string",
+     *         enum={"Resigned", "Dissolved"},
+     *         description="Enum value indicating why the officer resigned"
+     *     ),
+     *     @OA\Property(
+     *         property="ClusterId",
+     *         type="integer",
+     *         description="The cluster id of the officers cluster"
+     *     ),
+     *     @OA\Property(
+     *         property="OfficerId",
+     *         type="integer",
+     *         description="The id of the officer"
+     *     ),
+     *     @OA\Property(
+     *         property="OfficerType",
+     *         type="string",
+     *         description="The type of the officer, either Person or Company"
+     *     ),
+     *     @OA\Property(
+     *         property="RestOfCluster",
+     *         type="array",
+     *         @OA\Items(
+     *             ref="#/components/schemas/lib_konnect_search_officer_outputincluster"
+     *         )
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
     public function output() : array
     {
         $arrClusterModels = [];

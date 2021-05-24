@@ -40,6 +40,32 @@ class CorporateHistoricName extends ModelAbstract
         return $this->_getFieldOrFail(self::FIELD_DATE_TO);
     }
 
+
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_corporate_historic_name",
+     *     type="object",
+     *     @OA\Property(
+     *         property="CompanyName",
+     *         type="string",
+     *         description="Historic name of company"
+     *     ),
+     *     @OA\Property(
+     *         property="DateFrom",
+     *         type="string",
+     *         description="Historic name date from"
+     *     ),
+     *     @OA\Property(
+     *         property="DateTo",
+     *         type="string",
+     *         description="Historic name date to"
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
     public function output(): array
     {
         return [
