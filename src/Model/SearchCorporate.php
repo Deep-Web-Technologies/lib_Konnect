@@ -95,6 +95,69 @@ class SearchCorporate extends ModelAbstract
         return $ittHistNames;
     }
 
+    /**
+     * @codingStandardsIgnoreStart
+     * @OA\Schema(
+     *     schema="lib_konnect_search_corporate_item",
+     *     type="object",
+     *     @OA\Property(
+     *         property="Type",
+     *         type="string",
+     *         description="Type of corporate search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Id",
+     *         type="string",
+     *         description="Id of search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Weight",
+     *         type="string",
+     *         description="Weight of search result"
+     *     ),
+     *     @OA\Property(
+     *         property="Corporate",
+     *         type="string",
+     *         description="Name of associated company"
+     *     ),
+
+     *     @OA\Property(
+     *         property="CRN",
+     *         type="string",
+     *         description="Company number of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="Status",
+     *         type="string",
+     *         description="Current status of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="IncorporationDate",
+     *         type="string",
+     *         description="Date of incorporation of associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="Address",
+     *         type="string",
+     *         description="Address of the associated company"
+     *     ),
+     *     @OA\Property(
+     *         property="PreviousCompanyName",
+     *         type="array",
+     *         description="Previous known names for a company",
+     *         @OA\Items(type="string")
+     *     ),
+     *     @OA\Property(
+     *         property="HistoricNames",
+     *         type="object",
+     *         description="Historic names for a company",
+     *             ref="#/components/schemas/lib_konnect_corporate_historic_name"
+     *     )
+     * )
+     * @codingStandardsIgnoreEnd
+     * @return array
+     * @author Morgan Slater
+     */
     public function output() : array
     {
         $ittHistNames = $this->getHistoricNames();
