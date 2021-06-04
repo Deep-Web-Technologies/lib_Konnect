@@ -45,7 +45,7 @@ class Client
         string $strKonnectId
     ) : ?array
     {
-        $response = $this->_client->get("v2/corporate/$strKonnectId/check");
+        $response = $this->_client->get("/v2/corporate/$strKonnectId/check");
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
@@ -55,7 +55,7 @@ class Client
     public function getOfficer(int $intOfficerId) : ?array
     {
         try {
-            $response = $this->_client->get("/officer/$intOfficerId");
+            $response = $this->_client->get("/v2/officer/$intOfficerId/check");
         } catch (RequestException $e) {
             if ($e->getResponse()->getStatusCode() === 404) {
                 throw new Error404("Officer not found. ID: $intOfficerId");
