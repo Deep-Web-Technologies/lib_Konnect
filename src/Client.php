@@ -42,37 +42,14 @@ class Client
     }
 
     public function getCorporate(
-        string $strCRN,
-        ?int $intResignation = null,
-        array $arrRequiredFields = []
-    ) : ModelCorporate
+        string $strKonnectId
+    ) : ?array
     {
-        $strUrl = "/corporate/gb,$strCRN";
-
-        if (!is_null($intResignation)) {
-            $strUrl = $strUrl . "?ResignedDateWithin=" . $intResignation;
-        }
-
-        if (!empty($arrRequiredFields)) {
-            $strFields = implode(',', $arrRequiredFields);
-            $strUrl = $strUrl . "?RequiredFields=" . $strFields;
-        }
-
-        try {
-            $response = $this->_client->get($strUrl);
-        } catch (RequestException $e) {
-            if ($e->getResponse()->getStatusCode() === 404) {
-                throw new Error404("Corporate not found. CRN: $strCRN");
-            } else {
-                throw $e;
-            }
-        }
+        $response = $this->_client->get("v2/corporate/$strKonnectId/check");
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
-        $modelCorporate = KonnectFactory::createCorporate($arrContent);
-
-        return $modelCorporate;
+        return $arrContent;
     }
 
     public function getOfficer(int $intOfficerId) : ?ModelOfficer
