@@ -75,7 +75,7 @@ class Client
         return $modelCorporate;
     }
 
-    public function getOfficer(int $intOfficerId) : ?ModelOfficer
+    public function getOfficer(int $intOfficerId) : ?array
     {
         try {
             $response = $this->_client->get("/officer/$intOfficerId");
@@ -89,9 +89,7 @@ class Client
 
         $arrContent = json_decode($response->getBody()->getContents(), true);
 
-        $modelOfficer = KonnectFactory::createOfficer($arrContent);
-
-        return $modelOfficer;
+        return $arrContent;
      }
 
     public function searchOfficer(
