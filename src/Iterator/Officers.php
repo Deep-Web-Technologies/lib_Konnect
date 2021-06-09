@@ -12,7 +12,10 @@ class Officers extends IttModelAbstract
     public function getByName(string $strName) : ?ModelOfficer
     {
         foreach ($this as $modelOfficer) {
-            if (strtolower($modelOfficer->getName()) === strtolower($strName)) {
+            $strModelName = preg_replace('/\s+/', ' ', $modelOfficer->getName());
+            $strName = preg_replace('/\s+/', ' ', $strName);
+
+            if (strtolower($strModelName) === strtolower($strName)) {
                 return $modelOfficer;
             }
 
