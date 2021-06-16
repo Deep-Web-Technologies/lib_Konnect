@@ -26,6 +26,7 @@ class SearchOfficer extends ModelAbstract
     const FIELD_OFFICER_ID = 'OfficerId';
     const FIELD_OFFICER_TYPE = 'OfficerType';
     const FIELD_REST_OF_CLUSTER = 'RestOfCluster';
+    const FIELD_IS_FORMATION_AGENT  = 'IsFormationAgent';
 
     const PRIMARY_KEY = self::FIELD_OFFICER_ID;
 
@@ -45,6 +46,7 @@ class SearchOfficer extends ModelAbstract
         self::FIELD_OFFICER_ID,
         self::FIELD_OFFICER_TYPE,
         self::FIELD_REST_OF_CLUSTER,
+        self::FIELD_IS_FORMATION_AGENT,
     ];
 
     public static function getFields() : array
@@ -132,6 +134,10 @@ class SearchOfficer extends ModelAbstract
         return new Itt($this->_getField(self::FIELD_REST_OF_CLUSTER, []));
     }
 
+    public function IsFormationAgent() : bool
+    {
+        return (bool)$this->_getFieldOrFail(self::FIELD_IS_FORMATION_AGENT);
+    }
 
     /**
      * @codingStandardsIgnoreStart
@@ -334,6 +340,7 @@ class SearchOfficer extends ModelAbstract
             self::FIELD_OFFICER_ID => $this->getOfficerId(),
             self::FIELD_OFFICER_TYPE => $this->getOfficerType()->getId(),
             self::FIELD_REST_OF_CLUSTER => $arrClusterModels,
+            self::FIELD_IS_FORMATION_AGENT => $this->IsFormationAgent(),
         ];
     }
 }
