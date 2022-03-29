@@ -46,6 +46,12 @@ class Officer extends KonnectAbstract
     const FIELD_CORPORATES                 = 'Corporates';
     const FIELD_ACTS_AS_PSC                = 'ActsAsPsc';
     const FIELD_LINKED_ADDRESSES           = 'LinkedAddresses';
+    const FIELD_DOB                        = 'DOB';
+    const FIELD_ADDRESS_DATA               = 'AddressData';
+
+    const ADDRESS_DATA_HOUSE_NAME          = 'HouseName';
+    const ADDRESS_DATA_HOUSE_NUMBER        = 'HouseNumber';
+    const ADDRESS_DATA_POSTCODE            = 'Postcode';
 
     const PRIMARY_KEY        = self::FIELD_ID;
 
@@ -74,6 +80,8 @@ class Officer extends KonnectAbstract
         self::FIELD_OTHER_POSITIONS,
         self::FIELD_CORP_APPOINTMENT,
         self::FIELD_ACTS_AS_PSC,
+        self::FIELD_DOB,
+        self::FIELD_ADDRESS_DATA,
     ];
 
     public static function getFields() : array
@@ -264,6 +272,29 @@ class Officer extends KonnectAbstract
         return $this->_getField(self::FIELD_ULT_OWNERSHIP_STRUCT, []);
     }
 
+    public function getDOB() : ?string
+    {
+        return $this->_getField(self::FIELD_DOB, null);
+    }
+
+    public function getAddressData() : array
+    {
+        return $this->_getField(self::FIELD_ADDRESS_DATA, []);
+    }
+
+    public function getAddressHouseName() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NAME] ?? null;
+    }
+    public function getAddressHouseNumber() : ?int
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NUMBER] ?? null;
+    }
+    public function getAddressPostcode() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_POSTCODE] ?? null;
+    }
+
     public function isActive() : bool
     {
         return (
@@ -368,7 +399,9 @@ class Officer extends KonnectAbstract
             [
                 self::FIELD_ADDRESS_IN_FULL => $this->getAddressInFull(),
                 self::FIELD_PARTIAL_DOB     => $this->getPartialDateOfBirth(),
-                self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames()
+                self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames(),
+                self::FIELD_DOB             => $this->getDOB(),
+                self::FIELD_ADDRESS_DATA    => $this->getAddressData(),
             ]
         );
 

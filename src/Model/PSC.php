@@ -18,8 +18,14 @@ class PSC extends KonnectAbstract
     const FIELD_DATA           = 'Data';
     const FIELD_DATA_CEASED    = 'CeasedOn';
     const FIELD_PARTIAL_DOB    = 'PartialDateOfBirth';
+    const FIELD_DOB            = 'DOB';
+    const FIELD_ADDRESS_DATA   = 'AddressData';
 
     const FIELD_DATA_REASONS = 'Reasons';
+
+    const ADDRESS_DATA_HOUSE_NAME   = 'HouseName';
+    const ADDRESS_DATA_HOUSE_NUMBER = 'HouseNumber';
+    const ADDRESS_DATA_POSTCODE     = 'Postcode';
 
     const PRIMARY_KEY          = self::FIELD_PSC_ID;
 
@@ -33,7 +39,9 @@ class PSC extends KonnectAbstract
         self::FIELD_CHPSC_ID,
         self::FIELD_PSC_ID,
         self::FIELD_NAME,
-        self::FIELD_DATA
+        self::FIELD_DATA,
+        self::FIELD_DOB,
+        self::FIELD_ADDRESS_DATA,
     ];
 
     public static function getFields() : array
@@ -114,6 +122,29 @@ class PSC extends KonnectAbstract
         return $this->_getField(self::FIELD_PARTIAL_DOB, null);
     }
 
+    public function getDOB() : ?string
+    {
+        return $this->_getField(self::FIELD_DOB, null);
+    }
+
+    public function getAddressData() : array
+    {
+        return $this->_getField(self::FIELD_ADDRESS_DATA, []);
+    }
+
+    public function getAddressHouseName() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NAME] ?? null;
+    }
+    public function getAddressHouseNumber() : ?int
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NUMBER] ?? null;
+    }
+    public function getAddressPostcode() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_POSTCODE] ?? null;
+    }
+
     public function isActive() : bool
     {
         return is_null($this->getCeasedOn());
@@ -154,7 +185,9 @@ class PSC extends KonnectAbstract
     {
         $arrEntityData = array_filter(
             [
-                self::FIELD_PARTIAL_DOB => $this->getPartialDateOfBirth()
+                self::FIELD_PARTIAL_DOB  => $this->getPartialDateOfBirth(),
+                self::FIELD_DOB          => $this->getDOB(),
+                self::FIELD_ADDRESS_DATA => $this->getAddressData(),
             ]
         );
 
