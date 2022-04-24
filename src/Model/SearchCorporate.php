@@ -3,6 +3,7 @@
 namespace Kompli\Konnect\Model;
 
 use Kompli\Konnect\Iterator\CorporateHistoricNames as IttHistNames;
+use Kompli\Konnect\Helper\Enum\CorporateStatus;
 
 class SearchCorporate extends ModelAbstract
 {
@@ -93,6 +94,12 @@ class SearchCorporate extends ModelAbstract
         );
 
         return $ittHistNames;
+    }
+
+    public function bIsDissolved() : bool
+    {
+        $enumStatus = new CorporateStatus($this->getStatus());
+        return $enumStatus->isTerminal();
     }
 
     /**
