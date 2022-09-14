@@ -52,6 +52,10 @@ class Officer extends KonnectAbstract
     const ADDRESS_DATA_HOUSE_NAME          = 'HouseName';
     const ADDRESS_DATA_HOUSE_NUMBER        = 'HouseNumber';
     const ADDRESS_DATA_POSTCODE            = 'Postcode';
+    const ADDRESS_DATA_FLAT                = 'Flat';
+    const ADDRESS_DATA_STREET              = 'Street';
+    const ADDRESS_DATA_CITY                = 'City';
+    const ADDRESS_DATA_COUNTY              = 'County';
 
     const PRIMARY_KEY        = self::FIELD_ID;
 
@@ -116,12 +120,21 @@ class Officer extends KonnectAbstract
 
     public function getFirstName() : ?string
     {
-        return $this->_getField(self::FIELD_FIRST_NAME, null);
+        $strFN = $this->_getField(self::FIELD_FIRST_NAME, null);
+        if (empty($strFN) && !empty($this->getName())) {
+            return implode(' ', explode(' ', $this->getName(), -1));
+        }
+        return $strFN;
     }
 
     public function getLastName() : ?string
     {
-        return $this->_getField(self::FIELD_LAST_NAME, null);
+        $strLN = $this->_getField(self::FIELD_LAST_NAME, null);
+        if (empty($strLN) && !empty($this->getName())) {
+            $arrNameParts = explode(' ', $this->getName());
+            return array_pop($arrNameParts);
+        }
+        return $strLN;
     }
 
     public function getOfficerRole() : ?OfficerRole
@@ -293,6 +306,22 @@ class Officer extends KonnectAbstract
     public function getAddressPostcode() : ?string
     {
         return $this->getAddressData()[self::ADDRESS_DATA_POSTCODE] ?? null;
+    }
+    public function getAddressFlat() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_FLAT] ?? null;
+    }
+    public function getAddressStreet() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_STREET] ?? null;
+    }
+    public function getAddressCity() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_CITY] ?? null;
+    }
+    public function getAddressCounty() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_COUNTY] ?? null;
     }
 
     public function isActive() : bool
