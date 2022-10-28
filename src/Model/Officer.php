@@ -18,6 +18,7 @@ class Officer extends KonnectAbstract
     const FIELD_TITLE                      = 'Title';
     const FIELD_NAME                       = 'Name';
     const FIELD_FIRST_NAME                 = 'FirstName';
+    const FIELD_MIDDLE_NAMES               = 'MiddleNames';
     const FIELD_LAST_NAME                  = 'LastName';
     const FIELD_OFFICER_ROLE               = 'OfficerRole';
     const FIELD_POSITION                   = 'Position';
@@ -115,23 +116,56 @@ class Officer extends KonnectAbstract
 
     public function getName() : ?string
     {
-        return $this->_getField(self::FIELD_NAME, null);
+        if (
+            empty($this->getFirstName()) ||
+            empty($this->getLastName())
+        ) {
+            $this->_getField(self::FIELD_NAME, null);
+        }
+
+        $strMNs = '';
+        if (!empty($strMNs)) {
+            $strMNs = $this->getMiddleNames().' ';
+        }
+
+        return $this->getFirstName().' '.$strMNs.$this->getLastName();
     }
 
     public function getFirstName() : ?string
     {
-        $strFN = $this->_getField(self::FIELD_FIRST_NAME, null);
-        if (empty($strFN) && !empty($this->getName())) {
-            return implode(' ', explode(' ', $this->getName(), -1));
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strFN   = $this->_getField(self::FIELD_FIRST_NAME, null);
+
+        if (empty($strFN) && !empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
+            return $arrNameParts[0];
         }
         return $strFN;
     }
 
+    public function getMiddleNames() : ?string
+    {
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strMNs  = $this->_getField(self::FIELD_MIDDLE_NAMES, null);
+
+        if (empty($strMNs) && !empty($strName)) {
+            $arrNameParts   = explode(' ', $strName);
+            $arrMiddleNames = array_slice($arrNameParts, 1, -1);
+            if (empty($arrMiddleNames)) {
+                return null;
+            }
+            return implode(' ', $arrMiddleNames);
+        }
+        return $strMNs;
+    }
+
     public function getLastName() : ?string
     {
-        $strLN = $this->_getField(self::FIELD_LAST_NAME, null);
-        if (empty($strLN) && !empty($this->getName())) {
-            $arrNameParts = explode(' ', $this->getName());
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strLN   = $this->_getField(self::FIELD_LAST_NAME, null);
+
+        if (empty($strLN) && !empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
             return array_pop($arrNameParts);
         }
         return $strLN;
