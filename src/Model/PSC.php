@@ -145,7 +145,7 @@ class PSC extends KonnectAbstract
         }
 
         $strMNs = '';
-        if (!empty($strMNs)) {
+        if (!empty($this->getMiddleNames())) {
             $strMNs = $this->getMiddleNames().' ';
         }
 
