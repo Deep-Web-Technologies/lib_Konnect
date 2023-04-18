@@ -180,6 +180,15 @@ class Officer extends KonnectAbstract
         return new OfficerRole($intOfficerRole);
     }
 
+    public function getOfficerRoleBitCollection() : ?int
+    {
+        $bitOfficerRole = $this->getOfficerRole();
+        if (is_null($bitOfficerRole)) {
+            return null;
+        }
+        return $bitOfficerRole->getBitCollection();
+    }
+
     public function getPosition() : ?string
     {
         return $this->_getField(self::FIELD_POSITION, null);
