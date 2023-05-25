@@ -135,8 +135,11 @@ class Officer extends KonnectAbstract
     {
         $strName = $this->_getField(self::FIELD_NAME, null);
         $strFN   = $this->_getField(self::FIELD_FIRST_NAME, null);
+        if (!empty($strFN)) {
+            $strName = $strFN;
+        }
 
-        if (empty($strFN) && !empty($strName)) {
+        if (!empty($strName)) {
             $arrNameParts = explode(' ', $strName);
             return $arrNameParts[0];
         }
