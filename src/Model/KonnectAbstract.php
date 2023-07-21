@@ -24,6 +24,12 @@ abstract class KonnectAbstract extends ModelAbstract
     const FIELD_KONNECT_ID         = 'KonnectId';
     const FIELD_RETIEVED_AT        = 'RetrievedAt';
     const FIELD_REQUESTOR          = 'Requestor';
+    const FIELD_BANK_DETAILS       = 'BankDetails';
+
+    const BANK_DETAIL_ACCOUNT_NAME   = 'AccountName';
+    const BANK_DETAIL_ACCOUNT_NUMBER = 'AccountNumber';
+    const BANK_DETAIL_SORTCODE       = 'Sortcode';
+    const BANK_DETAIL_ACCOUNT_TYPE   = 'AccountType';
 
     public function getKonnectId() : ?string
     {
@@ -95,6 +101,28 @@ abstract class KonnectAbstract extends ModelAbstract
         return $this->_getField(self::FIELD_TARGET_NAME, null);
     }
 
+    public function getBankDetails() : array
+    {
+        return $this->_getField(self::FIELD_BANK_DETAILS, []);
+    }
+    public function getBankDetailAccountName() : ?string
+    {
+        return $this->getBankDetails()[self::BANK_DETAIL_ACCOUNT_NAME] ?? null;
+    }
+    public function getBankDetailAccountNumber() : ?string
+    {
+        return $this->getBankDetails()
+            [self::BANK_DETAIL_ACCOUNT_NUMBER] ?? null;
+    }
+    public function getBankDetailSortcode() : ?string
+    {
+        return $this->getBankDetails()[self::BANK_DETAIL_SORTCODE] ?? null;
+    }
+    public function getBankDetailAccountType() : ?string
+    {
+        return $this->getBankDetails()[self::BANK_DETAIL_ACCOUNT_TYPE] ?? null;
+    }
+
     public function setIncludeInProduct(bool $bIncludeInProduct) : self
     {
         return $this->_setField(
@@ -162,7 +190,8 @@ abstract class KonnectAbstract extends ModelAbstract
                 self::FIELD_SEND_TYPE => $intSendType,
                 self::FIELD_FILE_PATHS => $this->getFilePaths(),
                 self::FIELD_DOC_TYPE => $strDocType,
-                self::FIELD_COUNTRY => $this->getCountry()
+                self::FIELD_COUNTRY => $this->getCountry(),
+                self::FIELD_BANK_DETAILS => $this->getBankDetails(),
             ]
         );
 
