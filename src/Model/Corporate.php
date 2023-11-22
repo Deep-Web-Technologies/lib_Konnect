@@ -83,7 +83,8 @@ class Corporate extends KonnectAbstract
 
     public function getCorporateId() : ?string
     {
-        return $this->_getField(self::FIELD_CORPORATE_ID, null);
+        return $this->_getField(self::FIELD_CORPORATE_ID, null) ??
+            $this->getKonnectId();
     }
 
     public function getJurisdictionCode() : ?string
