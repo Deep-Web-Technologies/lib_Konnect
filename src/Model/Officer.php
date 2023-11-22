@@ -88,7 +88,7 @@ class Officer extends KonnectAbstract
 
     public function getId()
     {
-        return $this->_getField(self::FIELD_ID, null);
+        return $this->_getField(self::FIELD_ID, null) ?? $this->getKonnectId();
     }
 
     public function getKonnectId() : ?string

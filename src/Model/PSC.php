@@ -46,6 +46,12 @@ class PSC extends KonnectAbstract
         return self::PRIMARY_KEY;
     }
 
+    public function getId()
+    {
+        return $this->_getField(self::FIELD_PSC_ID, null) ??
+            $this->getKonnectId();
+    }
+
     public function getAddressPK() : ?int
     {
         return $this->_getField(self::FIELD_ADDRESS_PK, null);
