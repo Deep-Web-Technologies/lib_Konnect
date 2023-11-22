@@ -3,6 +3,8 @@
 namespace Kompli\Konnect\Model;
 
 use Kompli\Konnect\Iterator\CorporateHistoricNames as IttHistNames;
+use Kompli\Konnect\Helper\Enum\CorporateStatus;
+use Kompli\Konnect\Helper\Address;
 
 class SearchCorporate extends ModelAbstract
 {
@@ -81,6 +83,50 @@ class SearchCorporate extends ModelAbstract
         return $this->_getField(self::FIELD_ADDRESS, "");
     }
 
+    public function getAddressLineOne() : string
+    {
+        $arrAddressLines = explode(',', $this->getAddress());
+        if (empty($arrAddressLines)) {
+            return '';
+        }
+
+        $strLineOne = strtolower(trim($arrAddressLines[0]));
+        if (
+            $strLineOne === strtolower($this->getAddressCity()) ||
+            $strLineOne === strtolower($this->getAddressPostcode())
+        ) {
+            return '';
+        }
+        return ucwords($strLineOne);
+    }
+
+    public function getAddressLineTwo() : string
+    {
+        $arrAddressLines = explode(',', $this->getAddress());
+        if (empty($arrAddressLines) || !isset($arrAddressLines[1])) {
+            return '';
+        }
+
+        $strLineTwo = strtolower(trim($arrAddressLines[1]));
+        if (
+            $strLineTwo === strtolower($this->getAddressCity()) ||
+            $strLineTwo === strtolower($this->getAddressPostcode())
+        ) {
+            return '';
+        }
+        return ucwords($strLineTwo);
+    }
+
+    public function getAddressCity() : string
+    {
+        return Address::getCity($this->getAddress());
+    }
+
+    public function getAddressPostcode() : string
+    {
+        return Address::getPostcode($this->getAddress());
+    }
+
     public function getPreviousNames() : array
     {
         return $this->_getField(self::FIELD_PREVIOUS_NAMES, []);
@@ -93,6 +139,12 @@ class SearchCorporate extends ModelAbstract
         );
 
         return $ittHistNames;
+    }
+
+    public function bIsDissolved() : bool
+    {
+        $enumStatus = new CorporateStatus($this->getStatus());
+        return $enumStatus->isTerminal();
     }
 
     /**

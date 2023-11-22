@@ -8,6 +8,7 @@ class PSC extends KonnectAbstract
 {
     const FIELD_ADDRESS_PK     = 'AddressPK';
     const FIELD_FIRST_NAME     = 'FirstName';
+    const FIELD_MIDDLE_NAMES   = 'MiddleNames';
     const FIELD_LAST_NAME      = 'LastName';
     const FIELD_COMPANY_NUMBER = 'CompanyNumber';
     const FIELD_JURISDICTION   = 'JurisdictionCode';
@@ -18,8 +19,18 @@ class PSC extends KonnectAbstract
     const FIELD_DATA           = 'Data';
     const FIELD_DATA_CEASED    = 'CeasedOn';
     const FIELD_PARTIAL_DOB    = 'PartialDateOfBirth';
+    const FIELD_DOB            = 'DOB';
+    const FIELD_ADDRESS_DATA   = 'AddressData';
 
     const FIELD_DATA_REASONS = 'Reasons';
+
+    const ADDRESS_DATA_HOUSE_NAME   = 'HouseName';
+    const ADDRESS_DATA_HOUSE_NUMBER = 'HouseNumber';
+    const ADDRESS_DATA_POSTCODE     = 'Postcode';
+    const ADDRESS_DATA_FLAT         = 'Flat';
+    const ADDRESS_DATA_STREET       = 'Street';
+    const ADDRESS_DATA_CITY         = 'City';
+    const ADDRESS_DATA_COUNTY       = 'County';
 
     const PRIMARY_KEY          = self::FIELD_PSC_ID;
 
@@ -33,7 +44,9 @@ class PSC extends KonnectAbstract
         self::FIELD_CHPSC_ID,
         self::FIELD_PSC_ID,
         self::FIELD_NAME,
-        self::FIELD_DATA
+        self::FIELD_DATA,
+        self::FIELD_DOB,
+        self::FIELD_ADDRESS_DATA,
     ];
 
     public static function getFields() : array
@@ -59,12 +72,42 @@ class PSC extends KonnectAbstract
 
     public function getFirstName() : ?string
     {
-        return $this->_getField(self::FIELD_FIRST_NAME, null);
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strFN   = $this->_getField(self::FIELD_FIRST_NAME, null);
+
+        if (empty($strFN) && !empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
+            return $arrNameParts[0];
+        }
+        return $strFN;
+    }
+
+    public function getMiddleNames() : ?string
+    {
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strMNs  = $this->_getField(self::FIELD_MIDDLE_NAMES, null);
+
+        if (empty($strMNs) && !empty($strName)) {
+            $arrNameParts   = explode(' ', $strName);
+            $arrMiddleNames = array_slice($arrNameParts, 1, -1);
+            if (empty($arrMiddleNames)) {
+                return null;
+            }
+            return implode(' ', $arrMiddleNames);
+        }
+        return $strMNs;
     }
 
     public function getLastName() : ?string
     {
-        return $this->_getField(self::FIELD_LAST_NAME, null);
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strLN   = $this->_getField(self::FIELD_LAST_NAME, null);
+
+        if (empty($strLN) && !empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
+            return array_pop($arrNameParts);
+        }
+        return $strLN;
     }
 
     public function getCompanyNumber() : ?string
@@ -100,7 +143,19 @@ class PSC extends KonnectAbstract
 
     public function getName() : ?string
     {
-        return $this->_getField(self::FIELD_NAME, null);
+        if (
+            empty($this->getFirstName()) ||
+            empty($this->getLastName())
+        ) {
+            $this->_getField(self::FIELD_NAME, null);
+        }
+
+        $strMNs = '';
+        if (!empty($this->getMiddleNames())) {
+            $strMNs = $this->getMiddleNames().' ';
+        }
+
+        return $this->getFirstName().' '.$strMNs.$this->getLastName();
     }
 
     public function getData() : ?array
@@ -118,6 +173,45 @@ class PSC extends KonnectAbstract
     public function getPartialDateOfBirth() : ?string
     {
         return $this->_getField(self::FIELD_PARTIAL_DOB, null);
+    }
+
+    public function getDOB() : ?string
+    {
+        return $this->_getField(self::FIELD_DOB, null);
+    }
+
+    public function getAddressData() : array
+    {
+        return $this->_getField(self::FIELD_ADDRESS_DATA, []);
+    }
+
+    public function getAddressHouseName() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NAME] ?? null;
+    }
+    public function getAddressHouseNumber() : ?int
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NUMBER] ?? null;
+    }
+    public function getAddressPostcode() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_POSTCODE] ?? null;
+    }
+    public function getAddressFlat() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_FLAT] ?? null;
+    }
+    public function getAddressStreet() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_STREET] ?? null;
+    }
+    public function getAddressCity() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_CITY] ?? null;
+    }
+    public function getAddressCounty() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_COUNTY] ?? null;
     }
 
     public function isActive() : bool
@@ -160,7 +254,9 @@ class PSC extends KonnectAbstract
     {
         $arrEntityData = array_filter(
             [
-                self::FIELD_PARTIAL_DOB => $this->getPartialDateOfBirth()
+                self::FIELD_PARTIAL_DOB  => $this->getPartialDateOfBirth(),
+                self::FIELD_DOB          => $this->getDOB(),
+                self::FIELD_ADDRESS_DATA => $this->getAddressData(),
             ]
         );
 

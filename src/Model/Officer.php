@@ -18,6 +18,7 @@ class Officer extends KonnectAbstract
     const FIELD_TITLE                      = 'Title';
     const FIELD_NAME                       = 'Name';
     const FIELD_FIRST_NAME                 = 'FirstName';
+    const FIELD_MIDDLE_NAMES               = 'MiddleNames';
     const FIELD_LAST_NAME                  = 'LastName';
     const FIELD_OFFICER_ROLE               = 'OfficerRole';
     const FIELD_POSITION                   = 'Position';
@@ -46,6 +47,16 @@ class Officer extends KonnectAbstract
     const FIELD_CORPORATES                 = 'Corporates';
     const FIELD_ACTS_AS_PSC                = 'ActsAsPsc';
     const FIELD_LINKED_ADDRESSES           = 'LinkedAddresses';
+    const FIELD_DOB                        = 'DOB';
+    const FIELD_ADDRESS_DATA               = 'AddressData';
+
+    const ADDRESS_DATA_HOUSE_NAME          = 'HouseName';
+    const ADDRESS_DATA_HOUSE_NUMBER        = 'HouseNumber';
+    const ADDRESS_DATA_POSTCODE            = 'Postcode';
+    const ADDRESS_DATA_FLAT                = 'Flat';
+    const ADDRESS_DATA_STREET              = 'Street';
+    const ADDRESS_DATA_CITY                = 'City';
+    const ADDRESS_DATA_COUNTY              = 'County';
 
     const PRIMARY_KEY        = self::FIELD_ID;
 
@@ -74,6 +85,8 @@ class Officer extends KonnectAbstract
         self::FIELD_OTHER_POSITIONS,
         self::FIELD_CORP_APPOINTMENT,
         self::FIELD_ACTS_AS_PSC,
+        self::FIELD_DOB,
+        self::FIELD_ADDRESS_DATA,
     ];
 
     public static function getFields() : array
@@ -103,17 +116,62 @@ class Officer extends KonnectAbstract
 
     public function getName() : ?string
     {
-        return $this->_getField(self::FIELD_NAME, null);
+        if (
+            empty($this->getFirstName()) ||
+            empty($this->getLastName())
+        ) {
+            $this->_getField(self::FIELD_NAME, null);
+        }
+
+        $strMNs = '';
+        if (!empty($this->getMiddleNames())) {
+            $strMNs = $this->getMiddleNames().' ';
+        }
+
+        return $this->getFirstName().' '.$strMNs.$this->getLastName();
     }
 
     public function getFirstName() : ?string
     {
-        return $this->_getField(self::FIELD_FIRST_NAME, null);
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strFN   = $this->_getField(self::FIELD_FIRST_NAME, null);
+        if (!empty($strFN)) {
+            $strName = $strFN;
+        }
+
+        if (!empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
+            return $arrNameParts[0];
+        }
+        return $strFN;
+    }
+
+    public function getMiddleNames() : ?string
+    {
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strMNs  = $this->_getField(self::FIELD_MIDDLE_NAMES, null);
+
+        if (empty($strMNs) && !empty($strName)) {
+            $arrNameParts   = explode(' ', $strName);
+            $arrMiddleNames = array_slice($arrNameParts, 1, -1);
+            if (empty($arrMiddleNames)) {
+                return null;
+            }
+            return implode(' ', $arrMiddleNames);
+        }
+        return $strMNs;
     }
 
     public function getLastName() : ?string
     {
-        return $this->_getField(self::FIELD_LAST_NAME, null);
+        $strName = $this->_getField(self::FIELD_NAME, null);
+        $strLN   = $this->_getField(self::FIELD_LAST_NAME, null);
+
+        if (empty($strLN) && !empty($strName)) {
+            $arrNameParts = explode(' ', $strName);
+            return array_pop($arrNameParts);
+        }
+        return $strLN;
     }
 
     public function getOfficerRole() : ?OfficerRole
@@ -123,6 +181,15 @@ class Officer extends KonnectAbstract
             return null;
         }
         return new OfficerRole($intOfficerRole);
+    }
+
+    public function getOfficerRoleBitCollection() : ?int
+    {
+        $bitOfficerRole = $this->getOfficerRole();
+        if (is_null($bitOfficerRole)) {
+            return null;
+        }
+        return $bitOfficerRole->getBitCollection();
     }
 
     public function getPosition() : ?string
@@ -264,6 +331,45 @@ class Officer extends KonnectAbstract
         return $this->_getField(self::FIELD_ULT_OWNERSHIP_STRUCT, []);
     }
 
+    public function getDOB() : ?string
+    {
+        return $this->_getField(self::FIELD_DOB, null);
+    }
+
+    public function getAddressData() : array
+    {
+        return $this->_getField(self::FIELD_ADDRESS_DATA, []);
+    }
+
+    public function getAddressHouseName() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NAME] ?? null;
+    }
+    public function getAddressHouseNumber() : ?int
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_HOUSE_NUMBER] ?? null;
+    }
+    public function getAddressPostcode() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_POSTCODE] ?? null;
+    }
+    public function getAddressFlat() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_FLAT] ?? null;
+    }
+    public function getAddressStreet() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_STREET] ?? null;
+    }
+    public function getAddressCity() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_CITY] ?? null;
+    }
+    public function getAddressCounty() : ?string
+    {
+        return $this->getAddressData()[self::ADDRESS_DATA_COUNTY] ?? null;
+    }
+
     public function isActive() : bool
     {
         return (
@@ -368,7 +474,9 @@ class Officer extends KonnectAbstract
             [
                 self::FIELD_ADDRESS_IN_FULL => $this->getAddressInFull(),
                 self::FIELD_PARTIAL_DOB     => $this->getPartialDateOfBirth(),
-                self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames()
+                self::FIELD_PREVIOUS_NAMES  => $this->getPreviousNames(),
+                self::FIELD_DOB             => $this->getDOB(),
+                self::FIELD_ADDRESS_DATA    => $this->getAddressData(),
             ]
         );
 
