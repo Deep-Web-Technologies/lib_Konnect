@@ -61,8 +61,8 @@ class PSC extends KonnectAbstract
 
     public function getId()
     {
-        return $this->_getField(self::FIELD_PSC_ID, null) ??
-            $this->getKonnectId();
+        return $this->getKonnectId() ??
+            $this->_getField(self::FIELD_PSC_ID, null);
     }
 
     public function getAddressPK() : ?int
@@ -168,6 +168,15 @@ class PSC extends KonnectAbstract
             }
         }
         return $arrData;
+    }
+
+    public function getKonnectId() : ?string
+    {
+        $arrData = $this->getData();
+        if ($arrData && !empty($arrData[self::FIELD_KONNECT_ID])) {
+            return $arrData[self::FIELD_KONNECT_ID];
+        }
+        return $this->_getField(self::FIELD_KONNECT_ID, null);
     }
 
     public function getPartialDateOfBirth() : ?string
